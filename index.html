@@ -1,891 +1,111 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AvisFlash360 – Écouter • Protéger • Valoriser</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --black: #0a0a0a;
-    --dark: #111111;
-    --dark2: #181818;
-    --gold: #F5A623;
-    --gold2: #FFD166;
-    --orange: #F76B1C;
-    --blue: #2980FF;
-    --cyan: #00C9FF;
-    --green: #00E676;
-    --white: #FFFFFF;
-    --gray: #888888;
-    --gray2: #CCCCCC;
-    --grad: linear-gradient(135deg, #2980FF 0%, #00C9FF 30%, #00E676 60%, #F5A623 80%, #F76B1C 100%);
-    --grad2: linear-gradient(90deg, #F76B1C, #F5A623);
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'Outfit', sans-serif;
-    background: var(--black);
-    color: var(--white);
-    overflow-x: hidden;
-  }
-
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 2.5rem;
-    background: rgba(10,10,10,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .nav-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    letter-spacing: 0.04em;
-  }
-  .nav-logo span { background: var(--grad2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-  nav ul {
-    list-style: none;
-    display: flex;
-    gap: 2rem;
-  }
-  nav ul li a {
-    color: var(--gray2);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: color 0.2s;
-  }
-  nav ul li a:hover { color: var(--white); }
-
-  .nav-cta {
-    background: var(--grad2);
-    color: var(--black) !important;
-    padding: 0.5rem 1.4rem;
-    border-radius: 50px;
-    font-weight: 700 !important;
-    font-size: 0.85rem !important;
-    transition: opacity 0.2s !important;
-  }
-  .nav-cta:hover { opacity: 0.85; }
-
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 7rem 2rem 4rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    width: 800px; height: 800px;
-    background: radial-gradient(circle, rgba(41,128,255,0.12) 0%, transparent 70%);
-    top: -200px; left: 50%;
-    transform: translateX(-50%);
-    pointer-events: none;
-  }
-  .hero::after {
-    content: '';
-    position: absolute;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(247,107,28,0.08) 0%, transparent 70%);
-    bottom: 0; right: -100px;
-    pointer-events: none;
-  }
-
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 0.4rem 1.2rem;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    color: var(--gold);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-  }
-  .hero-badge::before { content: '⚡'; }
-
-  .hero h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3.5rem, 9vw, 7rem);
-    line-height: 0.95;
-    letter-spacing: 0.02em;
-    margin-bottom: 1.5rem;
-  }
-  .hero h1 .grad-text {
-    background: var(--grad);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .hero-sub {
-    font-size: clamp(1rem, 2vw, 1.3rem);
-    color: var(--gray2);
-    max-width: 600px;
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-    font-weight: 300;
-  }
-
-  .hero-tagline {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 3rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .hero-tagline span { color: var(--gold); }
-  .hero-tagline .dot { color: rgba(255,255,255,0.25); }
-
-  .hero-ctas {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 4rem;
-  }
-
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--grad2);
-    color: var(--black);
-    font-family: 'Outfit', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    padding: 0.9rem 2.2rem;
-    border-radius: 50px;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.2s, opacity 0.2s;
-  }
-  .btn-primary:hover { transform: translateY(-2px); opacity: 0.9; }
-
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: transparent;
-    color: var(--white);
-    font-family: 'Outfit', sans-serif;
-    font-weight: 600;
-    font-size: 1rem;
-    padding: 0.9rem 2.2rem;
-    border-radius: 50px;
-    border: 1px solid rgba(255,255,255,0.2);
-    text-decoration: none;
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .btn-secondary:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.04); }
-
-  .hero-stats {
-    display: flex;
-    gap: 3rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .stat-item { text-align: center; }
-  .stat-item .number {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.2rem;
-    background: var(--grad2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .stat-item .label { font-size: 0.8rem; color: var(--gray); font-weight: 500; letter-spacing: 0.05em; }
-
-  /* SECTION COMMUNE */
-  section { padding: 6rem 2rem; }
-  .container { max-width: 1100px; margin: 0 auto; }
-
-  .section-label {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1rem;
-  }
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
-    line-height: 1.05;
-    letter-spacing: 0.02em;
-    margin-bottom: 1rem;
-  }
-  .section-title .accent { background: var(--grad2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .section-desc {
-    font-size: 1.05rem;
-    color: var(--gray2);
-    max-width: 580px;
-    line-height: 1.7;
-    font-weight: 300;
-  }
-
-  /* PROBLÈME */
-  .problem-section { background: var(--dark); }
-  .problem-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin-top: 3.5rem;
-  }
-  @media (max-width: 700px) { .problem-grid { grid-template-columns: 1fr; } }
-  .problem-card {
-    background: var(--dark2);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 16px;
-    padding: 2rem;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.25s;
-  }
-  .problem-card:hover { border-color: rgba(247,107,28,0.3); }
-  .problem-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--grad2);
-    opacity: 0;
-    transition: opacity 0.25s;
-  }
-  .problem-card:hover::before { opacity: 1; }
-  .problem-icon {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-  .problem-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; }
-  .problem-card p { font-size: 0.9rem; color: var(--gray2); line-height: 1.6; }
-
-  /* COMMENT ÇA MARCHE */
-  .how-section { background: var(--black); }
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-top: 3.5rem;
-    position: relative;
-  }
-  @media (max-width: 780px) { .steps { grid-template-columns: 1fr; } }
-  .steps::before {
-    content: '';
-    position: absolute;
-    top: 42px; left: calc(16.6% + 1rem); right: calc(16.6% + 1rem);
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-  }
-  @media (max-width: 780px) { .steps::before { display: none; } }
-  .step-card {
-    text-align: center;
-    padding: 2.5rem 1.5rem;
-  }
-  .step-number {
-    width: 56px; height: 56px;
-    background: var(--grad2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    color: var(--black);
-    margin: 0 auto 1.5rem;
-    position: relative;
-    z-index: 1;
-  }
-  .step-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.7rem; }
-  .step-card p { font-size: 0.9rem; color: var(--gray2); line-height: 1.6; }
-
-  /* OFFRES */
-  .offers-section { background: var(--dark); }
-  .offers-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-top: 3.5rem;
-    align-items: start;
-  }
-  @media (max-width: 900px) { .offers-grid { grid-template-columns: 1fr; } }
-
-  .offer-card {
-    background: var(--dark2);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 20px;
-    padding: 2rem;
-    transition: transform 0.25s, border-color 0.25s;
-    position: relative;
-  }
-  .offer-card:hover { transform: translateY(-4px); }
-  .offer-card.featured {
-    background: var(--dark2);
-    border: 1px solid rgba(245,166,35,0.4);
-    transform: scale(1.03);
-  }
-  .offer-card.featured:hover { transform: scale(1.03) translateY(-4px); }
-  .featured-badge {
-    position: absolute;
-    top: -14px;
-    left: 50%; transform: translateX(-50%);
-    background: var(--grad2);
-    color: var(--black);
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 4px 16px;
-    border-radius: 50px;
-    white-space: nowrap;
-  }
-  .offer-name { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
-  .offer-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; margin-bottom: 0.5rem; }
-  .offer-price { margin-bottom: 1.5rem; }
-  .offer-price .amount { font-size: 2.8rem; font-weight: 800; }
-  .offer-price .period { font-size: 0.85rem; color: var(--gray); }
-  .offer-features { list-style: none; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.7rem; }
-  .offer-features li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.88rem; color: var(--gray2); line-height: 1.4; }
-  .offer-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-  .offer-features li.disabled { opacity: 0.35; }
-  .offer-features li.disabled::before { content: '✕'; color: var(--gray); }
-
-  .btn-offer {
-    width: 100%;
-    display: block;
-    text-align: center;
-    padding: 0.85rem;
-    border-radius: 50px;
-    font-family: 'Outfit', sans-serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    text-decoration: none;
-    cursor: pointer;
-    border: none;
-    transition: opacity 0.2s, transform 0.2s;
-  }
-  .btn-offer.outline {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.2);
-    color: var(--white);
-  }
-  .btn-offer.outline:hover { background: rgba(255,255,255,0.05); }
-  .btn-offer.primary-btn {
-    background: var(--grad2);
-    color: var(--black);
-  }
-  .btn-offer.primary-btn:hover { opacity: 0.88; transform: translateY(-1px); }
-
-  /* TÉMOIGNAGES */
-  .reviews-section { background: var(--black); }
-  .reviews-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-top: 3.5rem;
-  }
-  @media (max-width: 900px) { .reviews-grid { grid-template-columns: 1fr; } }
-  .review-card {
-    background: var(--dark2);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 16px;
-    padding: 1.8rem;
-  }
-  .review-stars { color: var(--gold); font-size: 1rem; margin-bottom: 1rem; letter-spacing: 0.1em; }
-  .review-text { font-size: 0.9rem; color: var(--gray2); line-height: 1.65; margin-bottom: 1.5rem; font-style: italic; }
-  .review-author { display: flex; align-items: center; gap: 0.8rem; }
-  .review-avatar {
-    width: 40px; height: 40px;
-    background: var(--grad2);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: 0.85rem; color: var(--black);
-    flex-shrink: 0;
-  }
-  .review-author-name { font-size: 0.9rem; font-weight: 600; }
-  .review-author-role { font-size: 0.78rem; color: var(--gray); }
-
-  /* PROTECTION / GARANTIE */
-  .trust-section {
-    background: var(--dark);
-    text-align: center;
-  }
-  .trust-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-    margin-top: 3.5rem;
-  }
-  @media (max-width: 800px) { .trust-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 480px) { .trust-grid { grid-template-columns: 1fr; } }
-  .trust-item { text-align: center; padding: 1.5rem; }
-  .trust-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
-  .trust-item h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
-  .trust-item p { font-size: 0.82rem; color: var(--gray); line-height: 1.5; }
-
-  /* FAQ */
-  .faq-section { background: var(--black); }
-  .faq-list { margin-top: 3rem; max-width: 720px; }
-  .faq-item {
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    padding: 1.4rem 0;
-  }
-  .faq-question {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 600;
-    gap: 1rem;
-  }
-  .faq-toggle { color: var(--gold); font-size: 1.4rem; line-height: 1; flex-shrink: 0; transition: transform 0.2s; }
-  .faq-item.open .faq-toggle { transform: rotate(45deg); }
-  .faq-answer {
-    font-size: 0.9rem;
-    color: var(--gray2);
-    line-height: 1.7;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s;
-  }
-  .faq-item.open .faq-answer { max-height: 300px; padding-top: 0.8rem; }
-
-  /* CTA FINAL */
-  .cta-section {
-    background: var(--dark);
-    text-align: center;
-    padding: 7rem 2rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .cta-section::before {
-    content: '';
-    position: absolute;
-    width: 700px; height: 700px;
-    background: radial-gradient(circle, rgba(247,107,28,0.1) 0%, transparent 70%);
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-  }
-  .cta-section .section-title { font-size: clamp(2.5rem, 6vw, 4.5rem); }
-  .cta-section .section-desc { margin: 1rem auto 2.5rem; }
-
-  /* FOOTER */
-  footer {
-    background: var(--black);
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding: 3rem 2rem 2rem;
-    text-align: center;
-  }
-  .footer-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    letter-spacing: 0.04em;
-    margin-bottom: 1rem;
-  }
-  .footer-logo span { background: var(--grad2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  footer p { font-size: 0.82rem; color: var(--gray); line-height: 1.8; }
-  .footer-links { display: flex; gap: 1.5rem; justify-content: center; margin: 1rem 0; flex-wrap: wrap; }
-  .footer-links a { font-size: 0.82rem; color: var(--gray); text-decoration: none; }
-  .footer-links a:hover { color: var(--white); }
-  .footer-sep { color: rgba(255,255,255,0.2); }
-
-  /* SCROLL ANIMATION */
-  .fade-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-</style>
-</head>
-<body>
-
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">AVIS<span>FLASH</span>360</div>
-  <ul>
-    <li><a href="#comment">Comment ça marche</a></li>
-    <li><a href="#offres">Tarifs</a></li>
-    <li><a href="#avis">Avis</a></li>
-    <li><a href="#faq">FAQ</a></li>
-    <li><a href="#contact" class="nav-cta">Démarrer →</a></li>
-  </ul>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-badge">Le Bouclier de votre réputation en ligne</div>
-  <h1>
-    Vos avis clients,<br>
-    <span class="grad-text">votre meilleur</span><br>
-    actif business
-  </h1>
-  <p class="hero-sub">
-    AvisFlash360 centralise, protège et valorise votre e-réputation pour que chaque avis travaille pour vous — même les négatifs.
-  </p>
-  <div class="hero-tagline">
-    <span>Écouter</span>
-    <span class="dot">•</span>
-    <span>Protéger</span>
-    <span class="dot">•</span>
-    <span>Valoriser</span>
-  </div>
-  <div class="hero-ctas">
-    <a href="#offres" class="btn-primary">⚡ Démarrer gratuitement</a>
-    <a href="#comment" class="btn-secondary">Voir comment ça marche</a>
-  </div>
-  <div class="hero-stats">
-    <div class="stat-item">
-      <div class="number">+2 400</div>
-      <div class="label">Établissements protégés</div>
-    </div>
-    <div class="stat-item">
-      <div class="number">98%</div>
-      <div class="label">Taux de satisfaction client</div>
-    </div>
-    <div class="stat-item">
-      <div class="number">4.9★</div>
-      <div class="label">Note moyenne obtenue</div>
-    </div>
-  </div>
-</section>
-
-<!-- PROBLÈME -->
-<section class="problem-section">
-  <div class="container">
-    <span class="section-label fade-up">Le problème</span>
-    <h2 class="section-title fade-up">Votre réputation est<br><span class="accent">attaquée chaque jour</span></h2>
-    <p class="section-desc fade-up">Un seul avis négatif non géré peut faire fuir des dizaines de clients potentiels. Voici ce qui se passe sans AvisFlash360.</p>
-    <div class="problem-grid">
-      <div class="problem-card fade-up">
-        <div class="problem-icon">💬</div>
-        <h3>Avis négatifs sans réponse</h3>
-        <p>88% des consommateurs vérifient les avis avant d'acheter. Un avis sans réponse, c'est une porte fermée à un client potentiel.</p>
-      </div>
-      <div class="problem-card fade-up">
-        <div class="problem-icon">🔍</div>
-        <h3>Réputation dispersée sur 10 plateformes</h3>
-        <p>Google, TripAdvisor, Facebook, Pages Jaunes... surveiller tout manuellement prend des heures et génère des erreurs.</p>
-      </div>
-      <div class="problem-card fade-up">
-        <div class="problem-icon">⏳</div>
-        <h3>Pas de temps pour collecter des avis</h3>
-        <p>Vos clients satisfaits n'écrivent pas spontanément. Sans système de collecte automatisé, seuls les mécontents prennent la plume.</p>
-      </div>
-      <div class="problem-card fade-up">
-        <div class="problem-icon">🚫</div>
-        <h3>Faux avis non signalés</h3>
-        <p>La concurrence déloyale existe. Des faux avis négatifs peuvent surgir à tout moment et détruire des années d'efforts en quelques heures.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- COMMENT ÇA MARCHE -->
-<section class="how-section" id="comment">
-  <div class="container">
-    <span class="section-label fade-up">La méthode</span>
-    <h2 class="section-title fade-up">Comment <span class="accent">AvisFlash360</span><br>transforme votre réputation</h2>
-    <p class="section-desc fade-up">Un processus en 3 étapes conçu pour les entrepreneurs et PME qui veulent une réputation irréprochable sans y passer leurs journées.</p>
-    <div class="steps">
-      <div class="step-card fade-up">
-        <div class="step-number">1</div>
-        <h3>On Écoute</h3>
-        <p>Nous connectons toutes vos plateformes d'avis et vous alertons en temps réel dès qu'un nouvel avis est publié — positif ou négatif.</p>
-      </div>
-      <div class="step-card fade-up">
-        <div class="step-number">2</div>
-        <h3>On Protège</h3>
-        <p>Réponses guidées par IA, signalement des faux avis, filtrage des avis abusifs. Votre image est défendue 24h/24, 7j/7.</p>
-      </div>
-      <div class="step-card fade-up">
-        <div class="step-number">3</div>
-        <h3>On Valorise</h3>
-        <p>Collecte automatisée d'avis positifs, mise en valeur sur votre site et vos réseaux. Chaque client satisfait devient un ambassadeur.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- OFFRES -->
-<section class="offers-section" id="offres">
-  <div class="container">
-    <span class="section-label fade-up">Nos formules</span>
-    <h2 class="section-title fade-up">Choisissez votre<br><span class="accent">niveau de protection</span></h2>
-    <p class="section-desc fade-up">Des formules adaptées aux indépendants comme aux chaînes multi-sites. Sans engagement, résiliable à tout moment.</p>
-    <div class="offers-grid">
-
-      <!-- STARTER -->
-      <div class="offer-card fade-up">
-        <div class="offer-name">Starter</div>
-        <div class="offer-title">Essentiel</div>
-        <div class="offer-price">
-          <span class="amount">49€</span><span class="period"> / mois</span>
-        </div>
-        <ul class="offer-features">
-          <li>Surveillance Google & Facebook</li>
-          <li>Alertes email temps réel</li>
-          <li>Modèles de réponses</li>
-          <li>Rapport mensuel</li>
-          <li>1 établissement</li>
-          <li class="disabled">Collecte automatisée</li>
-          <li class="disabled">Signalement faux avis</li>
-          <li class="disabled">Widget site web</li>
-        </ul>
-        <a href="#contact" class="btn-offer outline">Commencer →</a>
-      </div>
-
-      <!-- PRO -->
-      <div class="offer-card featured fade-up">
-        <div class="featured-badge">⚡ Le plus populaire</div>
-        <div class="offer-name">Pro</div>
-        <div class="offer-title">Protection 360</div>
-        <div class="offer-price">
-          <span class="amount">99€</span><span class="period"> / mois</span>
-        </div>
-        <ul class="offer-features">
-          <li>Surveillance 10+ plateformes</li>
-          <li>Alertes SMS + email</li>
-          <li>Réponses assistées par IA</li>
-          <li>Collecte avis automatisée</li>
-          <li>Signalement faux avis</li>
-          <li>Widget avis pour votre site</li>
-          <li>Tableau de bord analytics</li>
-          <li>Jusqu'à 3 établissements</li>
-        </ul>
-        <a href="#contact" class="btn-offer primary-btn">Démarrer maintenant →</a>
-      </div>
-
-      <!-- AGENCE -->
-      <div class="offer-card fade-up">
-        <div class="offer-name">Agence</div>
-        <div class="offer-title">Multi-sites</div>
-        <div class="offer-price">
-          <span class="amount">199€</span><span class="period"> / mois</span>
-        </div>
-        <ul class="offer-features">
-          <li>Surveillance illimitée</li>
-          <li>Accès multi-utilisateurs</li>
-          <li>IA avancée + personnalisée</li>
-          <li>Campagnes de collecte ciblées</li>
-          <li>Rapport marque blanche</li>
-          <li>API & intégrations CRM</li>
-          <li>Support prioritaire dédié</li>
-          <li>Sites illimités</li>
-        </ul>
-        <a href="#contact" class="btn-offer outline">Nous contacter →</a>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- TÉMOIGNAGES -->
-<section class="reviews-section" id="avis">
-  <div class="container">
-    <span class="section-label fade-up">Ils nous font confiance</span>
-    <h2 class="section-title fade-up">Ce que disent<br><span class="accent">nos clients</span></h2>
-    <div class="reviews-grid">
-
-      <div class="review-card fade-up">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">« En 2 mois, notre note Google est passée de 3,8 à 4,7 étoiles. Le système de collecte automatique a tout changé pour notre restaurant. »</p>
-        <div class="review-author">
-          <div class="review-avatar">ML</div>
-          <div>
-            <div class="review-author-name">Marie L.</div>
-            <div class="review-author-role">Restauratrice, Lyon</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="review-card fade-up">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">« Un concurrent nous avait inondé de faux avis. AvisFlash360 les a tous fait supprimer en moins d'une semaine. Inestimable. »</p>
-        <div class="review-author">
-          <div class="review-avatar">TC</div>
-          <div>
-            <div class="review-author-name">Thomas C.</div>
-            <div class="review-author-role">Gérant garage auto, Bordeaux</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="review-card fade-up">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">« Je gère 8 hôtels. Avant, c'était le chaos. Aujourd'hui j'ai une vision complète en 30 secondes et mes équipes savent exactement quoi faire. »</p>
-        <div class="review-author">
-          <div class="review-avatar">SB</div>
-          <div>
-            <div class="review-author-name">Sophie B.</div>
-            <div class="review-author-role">Directrice hôtelière, Paris</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- CONFIANCE -->
-<section class="trust-section">
-  <div class="container">
-    <span class="section-label fade-up">Notre engagement</span>
-    <h2 class="section-title fade-up">Votre <span class="accent">tranquillité d'esprit</span>,<br>c'est notre priorité</h2>
-    <div class="trust-grid">
-      <div class="trust-item fade-up">
-        <div class="trust-icon">🛡️</div>
-        <h4>Données sécurisées</h4>
-        <p>Hébergement RGPD, chiffrement SSL, vos données ne sont jamais revendues.</p>
-      </div>
-      <div class="trust-item fade-up">
-        <div class="trust-icon">⚡</div>
-        <h4>Alertes en temps réel</h4>
-        <p>Notification instantanée dès qu'un avis est publié, où que vous soyez.</p>
-      </div>
-      <div class="trust-item fade-up">
-        <div class="trust-icon">🔄</div>
-        <h4>Sans engagement</h4>
-        <p>Résiliez à tout moment, sans frais cachés. Aucun contrat longue durée.</p>
-      </div>
-      <div class="trust-item fade-up">
-        <div class="trust-icon">🤝</div>
-        <h4>Support humain</h4>
-        <p>Une vraie équipe disponible par chat, email et téléphone. Pas un bot.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="faq-section" id="faq">
-  <div class="container">
-    <span class="section-label fade-up">Questions fréquentes</span>
-    <h2 class="section-title fade-up">Vous avez des<br><span class="accent">questions ?</span></h2>
-    <div class="faq-list fade-up">
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>AvisFlash360 fonctionne avec quelles plateformes ?</span>
-          <span class="faq-toggle">+</span>
-        </div>
-        <div class="faq-answer">Nous couvrons Google, Facebook, TripAdvisor, Pages Jaunes, Trustpilot, Booking.com, Yelp et bien d'autres. La liste s'étend régulièrement selon les demandes de nos clients.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>Combien de temps pour la mise en place ?</span>
-          <span class="faq-toggle">+</span>
-        </div>
-        <div class="faq-answer">La connexion de vos plateformes prend moins de 15 minutes. Notre équipe vous accompagne lors d'un onboarding de 30 minutes pour configurer votre tableau de bord et lancer vos premières campagnes.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>Peut-on vraiment faire supprimer de faux avis ?</span>
-          <span class="faq-toggle">+</span>
-        </div>
-        <div class="faq-answer">Oui. Nous guidons le processus de signalement auprès des plateformes et connaissons les critères exacts qui justifient une suppression. Notre taux de succès sur les faux avis clairement identifiés dépasse 70%.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>Puis-je tester avant de m'engager ?</span>
-          <span class="faq-toggle">+</span>
-        </div>
-        <div class="faq-answer">Oui, nous proposons 14 jours d'essai gratuit sans carte bancaire sur la formule Pro. Aucun engagement, résiliation en un clic.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>L'IA répond à ma place aux avis ?</span>
-          <span class="faq-toggle">+</span>
-        </div>
-        <div class="faq-answer">L'IA génère des suggestions de réponses personnalisées selon votre secteur et le contenu de l'avis. Vous conservez toujours le dernier mot avant publication. Vous pouvez aussi activer la réponse automatique sur les avis 5 étoiles.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA FINAL -->
-<section class="cta-section" id="contact">
-  <div class="container">
-    <span class="section-label fade-up">Passez à l'action</span>
-    <h2 class="section-title fade-up">Protégez votre réputation<br><span class="accent">dès aujourd'hui</span></h2>
-    <p class="section-desc fade-up">Rejoignez 2 400+ établissements qui ont repris le contrôle de leur image en ligne. 14 jours gratuits, sans carte bancaire.</p>
-    <a href="#offres" class="btn-primary fade-up">⚡ Démarrer l'essai gratuit</a>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">AVIS<span>FLASH</span>360</div>
-  <p>Écouter • Protéger • Valoriser</p>
-  <div class="footer-links">
-    <a href="#">Mentions légales</a>
-    <span class="footer-sep">|</span>
-    <a href="#">CGU</a>
-    <span class="footer-sep">|</span>
-    <a href="#">Politique de confidentialité</a>
-    <span class="footer-sep">|</span>
-    <a href="#">Contact</a>
-  </div>
-  <p>© 2026 AvisFlash360 — Tous droits réservés</p>
-</footer>
-
-<script>
-  // FAQ toggle
-  document.querySelectorAll('.faq-question').forEach(q => {
-    q.addEventListener('click', () => {
-      const item = q.closest('.faq-item');
-      item.classList.toggle('open');
-    });
-  });
-
-  // Scroll animation
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-  // Sticky nav background
-  window.addEventListener('scroll', () => {
-    const nav = document.querySelector('nav');
-    nav.style.borderBottomColor = window.scrollY > 50 ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.06)';
-  });
-</script>
-</body>
-</html>
+AVISFLASH360
+	•	Comment ça marche
+	•	Tarifs
+	•	FAQ
+	•	Démarrer →
+LE BOUCLIER DE VOTRE RÉPUTATION EN LIGNE
+Vos avis clients, votre meilleur actif business
+AvisFlash360 centralise, protège et valorise votre e-réputation pour que chaque avis travaille pour vous — même les négatifs.
+ÉCOUTER
+•
+PROTÉGER
+•
+VALORISER
+⚡ Démarrer gratuitement Voir comment ça marche
+29€
+Pour démarrer
+100%
+Automatisé pour vous
+0€
+Sans engagement
+LE PROBLÈME
+Votre réputation est attaquée chaque jour
+Un seul avis négatif non géré peut faire fuir des dizaines de clients potentiels. Voici ce qui se passe sans AvisFlash360.
+💬
+Avis négatifs sans réponse
+88% des consommateurs vérifient les avis avant d'acheter. Un avis sans réponse, c'est une porte fermée à un client potentiel.
+🔍
+Votre fiche Google livrée à elle-même
+Google est la première chose que vos futurs clients regardent. Un avis négatif sans réponse visible, c'est un client perdu avant même de vous avoir appelé.
+⏳
+Pas de temps pour collecter des avis
+Vos clients satisfaits n'écrivent pas spontanément. Sans système de collecte automatisé, seuls les mécontents prennent la plume.
+🚫
+Faux avis non signalés
+La concurrence déloyale existe. Des faux avis négatifs peuvent surgir à tout moment et détruire des années d'efforts en quelques heures.
+LA MÉTHODE
+Comment AvisFlash360 transforme votre réputation
+Un processus en 3 étapes conçu pour les artisans et indépendants qui veulent une réputation irréprochable sans y passer leurs journées.
+1
+On Écoute
+Nous connectons votre fiche Google et vous alertons par email dès qu'un nouvel avis est publié — positif ou négatif. Rien ne vous échappe.
+2
+On Protège
+Réponses rédigées avec l'aide de l'IA, adaptées à votre secteur et au ton de chaque avis. Votre image reste professionnelle en toutes circonstances.
+3
+On Valorise
+Emails automatiques et QR code personnalisé pour inviter vos clients satisfaits à laisser un avis. Plus d'avis positifs, meilleur référencement local.
+NOS FORMULES
+Choisissez votre niveau de protection
+Des formules pensées pour les artisans et indépendants. Sans engagement, résiliable à tout moment.
+ESSENTIEL
+Démarrer
+29€ / mois
+	•	Surveillance fiche Google Alertes email à chaque nouvel avis QR code de collecte personnalisé 1 établissement Campagnes email de collecte Suggestions de réponses IA Rapport mensuel
+Commencer →
+⚡ RECOMMANDÉ
+PRO
+Protection 360
+59€ / mois
+	•	Tout de la formule Essentiel Campagnes email automatiques de collecte Suggestions de réponses assistées par IA Rapport mensuel de votre réputation 1 établissement Multi-établissements
+Démarrer maintenant →
+MULTI-SITES
+Développement
+99€ / mois
+	•	Tout de la formule Pro Jusqu'à 3 établissements Rapport mensuel par établissement Support prioritaire par email Onboarding personnalisé
+Nous contacter →
+NOTRE ENGAGEMENT
+Votre tranquillité d'esprit, c'est notre priorité
+🛡️
+Données sécurisées
+Hébergement RGPD, chiffrement SSL, vos données ne sont jamais revendues.
+⚡
+Alertes en temps réel
+Notification instantanée dès qu'un avis est publié, où que vous soyez.
+🔄
+Sans engagement
+Résiliez à tout moment, sans frais cachés. Aucun contrat longue durée.
+🤝
+Support humain
+Une vraie personne vous répond par email. Pas un bot, pas un ticket sans suite.
+QUESTIONS FRÉQUENTES
+Vous avez des questions ?
+AvisFlash360 fonctionne avec quelles plateformes ?
++
+Au lancement, nous nous concentrons sur Google — la plateforme qui a le plus d'impact sur le référencement local et la décision d'achat de vos clients. D'autres plateformes seront ajoutées progressivement.
+Combien de temps pour la mise en place ?
++
+La configuration de votre fiche Google et la création de votre QR code prennent moins de 30 minutes. Je vous accompagne personnellement lors de votre onboarding.
+Comment fonctionne la collecte d'avis ?
++
+Vous recevez un QR code personnalisé à afficher chez vous ou sur vos documents (devis, factures, carte de visite). La formule Pro ajoute des campagnes email automatiques envoyées à vos clients après chaque prestation.
+L'IA répond à ma place aux avis ?
++
+L'IA génère des suggestions de réponses adaptées à votre secteur et au contenu de l'avis. Vous relisez et publiez vous-même — vous gardez toujours le contrôle de ce qui est dit en votre nom.
+Puis-je résilier à tout moment ?
++
+Oui, sans condition ni préavis. Aucun contrat longue durée, aucun frais de résiliation. Vous êtes libre.
+PASSEZ À L'ACTION
+Protégez votre réputation dès aujourd'hui
+Prenez le contrôle de votre réputation Google dès aujourd'hui. Sans engagement, résiliable à tout moment.
+⚡ Voir les formules
+AVISFLASH360
+Écouter • Protéger • Valoriser
+Mentions légales
+|
+CGU
+|
+Politique de confidentialité
+|
+Contact
+© 2026 AvisFlash360 — Tous droits réservés
